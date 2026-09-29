@@ -247,6 +247,7 @@ cross_platform = 2to3.bash \
 		mkinitrd.bash \
 		mktemp.bash \
 		mmsitepass.bash \
+		monit.bash \
 		monodevelop.bash \
 		mplayer.bash \
 		mr.bash \

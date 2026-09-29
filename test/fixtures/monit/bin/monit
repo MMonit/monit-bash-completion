@@ -1,0 +1,81 @@
+#!/bin/bash
+
+conffile="" check=""
+while (($#)); do
+    case $1 in
+        -c)
+            conffile=$2
+            shift
+            ;;
+        -h)
+            cat <<EOF
+Usage: monit [options]+ [command]
+Options are as follows:
+ -c file       Use this control file
+ -t            Run syntax check for the control file
+ -v            Verbose mode, work noisy (diagnostic output)
+ -h            Print this text
+Optional commands are as follows:
+ start all             - Start all services
+ start <name>          - Only start the named service
+ stop all              - Stop all services
+ stop <name>           - Stop the named service
+ status [name]         - Print full status information for service(s)
+ report [up|down|..]   - Report state of services. See manual for options
+ procmatch <pattern>   - Test process matching pattern
+EOF
+            exit 0
+            ;;
+        -vIt)
+            check=set
+            ;;
+    esac
+    shift
+done
+
+[[ $check ]] || exit 1
+
+cat <<EOF
+Runtime constants:
+ Control file       = ${conffile:-/etc/monitrc}
+ Pid file           = /run/monit.pid
+ Host Name          = not-a-service
+
+The service list contains the following entries:
+
+EOF
+
+if [[ $conffile ]]; then
+    cat <<EOF
+Program Name          = backup
+ Group                = jobs
+ Path                 = /usr/local/bin/backup
+ Monitoring mode      = active
+
+EOF
+else
+    cat <<EOF
+Process Name          = nginx
+ Group                = web, www
+ Pid file             = /run/nginx.pid
+ Monitoring mode      = active
+
+Remote Host Name      = gateway
+ Address              = 192.0.2.1
+ Monitoring mode      = active
+
+File Name             = hosts
+ Group                = files
+ Path                 = /etc/hosts
+ Monitoring mode      = active
+
+EOF
+fi
+
+cat <<EOF
+System Name           = localhost
+ Monitoring mode      = active
+
+-------------------------------------------------------------------------------
+Control file syntax OK
+EOF

@@ -396,6 +396,7 @@ EXTRA_DIST = \
 	test_modprobe.py \
 	test_module.py \
 	test_mogrify.py \
+	test_monit.py \
 	test_monodevelop.py \
 	test_montage.py \
 	test_mount.py \
